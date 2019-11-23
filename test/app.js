@@ -91,47 +91,73 @@ app.delete('/scholar/:id', function(req, res) {
   res.json({code:20000})
 })
 
-
+// 处理专家申请
 var apply = [
-  { 'id': 1, 'name': 'Elizabeth', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'status': 'published', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
-  { 'id': 2, 'name': 'xxxx', 'affiliation':"aaaaaaaa", 'country': 'US', 'status':'draft', 'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'}
+  { 'id': 1, 'user_id': '1', 'name': 'Elizabeth', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 2, 'user_id': '2', 'name': 'cxk', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 3, 'user_id': '3', 'name': 'a', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 4, 'user_id': '4', 'name': 'b', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 5, 'user_id': '5', 'name': 'c', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 6, 'user_id': '6', 'name': 'd', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 7, 'user_id': '7', 'name': 'e', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 8, 'user_id': '8', 'name': 'f', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 9, 'user_id': '9', 'name': 'g', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 10, 'user_id': '10', 'name': 'ab', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 11, 'user_id': '11', 'name': 'ac', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 12, 'user_id': '12', 'name': 'af', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 13, 'user_id': '13', 'name': 'bd', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 14, 'user_id': '14', 'name': 'bc', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 15, 'user_id': '15', 'name': 'bg', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 16, 'user_id': '16', 'name': 'abc', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 17, 'user_id': '17', 'name': 'eg', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 18, 'user_id': '18', 'name': 'fg', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 19, 'user_id': '19', 'name': 'fd1', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 20, 'user_id': '20', 'name': 'cf1', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
+  { 'id': 21, 'user_id': '21', 'name': 'lol', 'affiliation':"Qubuppydr Dryqx Lntm", 'country': 'CN', 'areaList':['AI',"CS"], 'contact': '13745678911' , 'portrait': 'http://www.baidu.com'},
+  { 'id': 22, 'user_id': '22', 'name': 'dnf', 'affiliation':"aaa", 'country': 'US',  'areaList':['math',"OS"],  'contact': '13745678911', 'portrait': 'http://www.baidu.com'},
 ]
 
-var applyCount = 3
-
+// 根据前端的query，返回符合的数据
 app.get("/apply", function(req, res) {
+  // console.log(req.query)
+
+  const { id, affiliation, country, name, page = 1, limit = 20, sort } = req.query
+  let mockList = apply.filter(item => {
+    if (country && item.country !== country) return false
+    if (affiliation && item.affiliation.indexOf(affiliation) < 0) return false
+    if (name && item.name.indexOf(name) < 0) return false
+    if (id && item.id !== parseInt(id)) return false
+    return true
+  })
+
+  if (sort === '-id') {
+      mockList = mockList.reverse()
+  }
+
+  const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
   res.json({
     code: 20000,
     data: {
-      list: apply
+      total: mockList.length,
+      list:  pageList,
     }
   });
 })
 
-app.post("/apply", function(req, res) {
-  console.log(req.body);
-  var data = req.body
-  var item = { 'id': applyCount, 'name':data.name, 'affiliation':data.affiliation, 'country': data.country, 'status': data.status, 'areaList': data.areaList, 'contact': data.contact, 'portrait': data.portrait}
-  apply.push(item)
-  applyCount = applyCount+1
-  res.json({code:20000})
-})
-
-// 修改
+// 同意申请
 app.post('/apply/:id', function(req, res) {
-  console.log(req.body);
-  var data = req.body
-  var item = { 'id': data.id, 'name':data.name, 'affiliation':data.affiliation, 'country': data.country, 'status': data.status, 'areaList': data.areaList, 'contact': data.contact, 'portrait': data.portrait}
-  for (i = 0; i < apply.length; i++) {
-    if (apply[i].id === item.id) {
-      apply[i] = item
+  console.log(typeof req.params.id)
+  for (i = 0, len=apply.length; i < len; i++) {
+    if (apply[i].id == req.params.id) {
+      apply.splice(i, 1)
       break;
     }
   }
   res.json({code:20000})
 })
 
-// 删除
+// 删除申请
 app.delete('/apply/:id', function(req, res) {
   console.log(typeof req.params.id)
   for (i = 0, len=apply.length; i < len; i++) {

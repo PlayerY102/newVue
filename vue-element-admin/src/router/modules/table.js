@@ -37,10 +37,10 @@ const tableRouter = {
       meta: { title: 'Complex Table' }
     },
     {
-      path: 'userApply',
-      component: () => import('@/views/table/userApply'),
-      name: 'UserApply',
-      meta: { title: 'User Apply' }
+      path: 'scholarApply',
+      component: () => import('@/views/table/scholarApply'),
+      name: 'ScholarApply',
+      meta: { title: 'Scholar Apply' }
     }
   ]
 }
