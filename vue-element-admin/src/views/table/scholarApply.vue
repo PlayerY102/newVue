@@ -188,7 +188,6 @@
 <script>
 import {
   fetchList,
-  createApply,
   updateApply,
   deleteApply
 } from '@/api/scholarApply'
@@ -265,6 +264,7 @@ export default {
       fetchList(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
+        console.log(this.list)
         this.listLoading = false
       })
     },
