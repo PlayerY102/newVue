@@ -1,3 +1,7 @@
+### code
+
+20000 正确返回
+
 ### 用户申请
 
 #### 获取筛选后的用户申请
@@ -90,5 +94,74 @@ DELETE /apply/{id}
 {
 	code: 20000
 }
+```
+
+### 获取专家列表
+
+#### 接口
+
+```
+GET /scholar
+```
+
+#### Request参数
+
+**params**
+
+* page:  第几页：默认是1
+* limit： 每页最多多少项，默认20
+* id： 申请编号
+* name: 姓名
+* affiliation:  机构名称
+* country： 国籍, 有{CN US,JP,EU,OTS}
+* email: 邮箱地址
+* sort： 排序方式，默认 '+id' 升序， '-id' 降序
+
+### 创建专家
+
+#### 接口
+
+```
+POST /sholar
+```
+
+#### Request参数
+
+##### data
+
+* id:  专家id 默认undefined
+* timestamp: 创建时间
+* name: 姓名
+* affiliation: 归属机构
+* country: 国籍，有{CN US,JP,EU,OTS}
+* email: 邮箱
+* areaList: 相关领域
+
+### 更新专家
+
+#### 接口
+
+```
+POST /sholar/{id}
+```
+
+#### Request参数
+
+##### data
+
+* id:  专家id 默认undefined
+* timestamp: 修改时间
+* name: 姓名
+* affiliation: 归属机构
+* country: 国籍，有{CN US,JP,EU,OTS}
+* email: 邮箱
+* areaList: 相关领域
+
+### 删除专家
+
+#### 接口
+
+```
+DELETE /sholar/{id}
 ```
 

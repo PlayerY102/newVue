@@ -29,9 +29,6 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <!-- <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>-->
       <el-select
         v-model="listQuery.country"
         placeholder="国籍"
@@ -46,15 +43,6 @@
           :value="item.key"
         />
       </el-select>
-      <!-- <el-select
-        v-model="listQuery.status"
-        placeholder="状态"
-        clearable
-        class="filter-item"
-        style="width: 100px"
-      >
-        <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-      </el-select> -->
       <el-select
         v-model="listQuery.sort"
         style="width: 100px"
@@ -82,17 +70,6 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >添加</el-button>
-      <!-- <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
-      >导出</el-button> -->
-      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        reviewer
-      </el-checkbox>-->
     </div>
 
     <el-table
@@ -117,11 +94,6 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="Date" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>-->
       <el-table-column label="姓名" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
@@ -138,51 +110,15 @@
           <el-tag>{{ row.country | countryFilter }}</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>-->
       <el-table-column label="领域" align="center" width="95">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleFetchPv(row.areaList)">{{ row.areaList.length }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="状态" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
-          <!-- <el-button
-            v-if="row.status!='published'"
-            size="mini"
-            type="success"
-            @click="handleModifyStatus(row,'published')"
-          >发布</el-button>
-          <el-button
-            v-if="row.status!='draft'"
-            size="mini"
-            @click="handleModifyStatus(row,'draft')"
-          >隐藏</el-button>  -->
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleModifyStatus(row,'deleted')"
-          >删除</el-button>
-          <!-- <el-button
-            v-if="row.status!='deleted'"
-            size="mini"
-            type="danger"
-            @click="handleDelete(row)"
-          >删除</el-button> -->
+          <el-button size="mini" type="danger" @click="handleModifyStatus(row,'deleted')">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -220,17 +156,9 @@
         <el-form-item label="email" prop="email">
           <el-input v-model="temp.email" />
         </el-form-item>
-        <!-- <el-form-item label="Date" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>-->
         <el-form-item label="所属机构" prop="affiliation">
           <el-input v-model="temp.affiliation" />
         </el-form-item>
-        <!-- <el-form-item label="状态">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="相关领域" prop="areaList">
           <el-tag
             v-for="tag in temp.areaList"
@@ -252,12 +180,6 @@
           />
           <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
         </el-form-item>
-        <!-- <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>-->
-        <!-- <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -365,25 +287,23 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        // type: [
-        //   { required: true, message: "type is required", trigger: "change" }
-        // ],
-        // timestamp: [
-        //   {
-        //     type: "date",
-        //     required: true,
-        //     message: "timestamp is required",
-        //     trigger: "change"
-        //   }
-        // ],
-        // title: [
-        //   { required: true, message: "title is required", trigger: "blur" }
-        // ]
         name: [
-          { required: true, message: 'name is required', trigger: 'change' }
+          { required: true, message: '请输入姓名', trigger: 'change' }
         ],
         country: [
-          { required: true, message: 'country is required', trigger: 'change' }
+          { required: true, message: '请选择国籍', trigger: 'change' }
+        ],
+        email: [
+          {
+            required: true, // 是否必填
+            message: '请输入邮箱地址', // 错误提示信息
+            trigger: 'blur' // 检验方式（blur为鼠标点击其他地方，）
+          },
+          {
+            type: 'email', // 要检验的类型
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur', 'change']
+          }
         ]
       },
       downloadLoading: false
@@ -429,7 +349,9 @@ export default {
     },
 
     handleModifyStatus(row, status) {
-      if (status == 'deleted') { this.handleDelete(row) } else {
+      if (status === 'deleted') {
+        this.handleDelete(row)
+      } else {
         const tmp = Object.assign({}, row) // copy obj
         tmp.status = status
         updateScholar(tmp).then(response => {
@@ -496,7 +418,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.temp.timestamp = new Date()
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -507,7 +429,8 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.timestamp = new Date()
+          console.log(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateScholar(tempData).then(() => {
             this.dialogFormVisible = false
             // 更新完后，重新从后台获取数据
@@ -528,18 +451,20 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async() => {
-        deleteScholar(row.id).then(() => {
-          // 删除后，更新
-          this.getList()
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
+      })
+        .then(async() => {
+          deleteScholar(row.id).then(() => {
+            // 删除后，更新
+            this.getList()
+            this.$notify({
+              title: 'Success',
+              message: 'Delete Successfully',
+              type: 'success',
+              duration: 2000
+            })
           })
         })
-      }).catch(() => {})
+        .catch(() => {})
     },
 
     handleFetchPv(pv) {
