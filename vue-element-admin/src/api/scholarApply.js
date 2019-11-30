@@ -12,15 +12,7 @@ export function fetchList(query) {
     params: query
   })
 }
-// 创建一个申请记录
-export function createApply(data) {
-  return request({
-    baseURL: baseURL,
-    url: '/apply',
-    method: 'post',
-    data
-  })
-}
+
 // 提交申请信息
 export function updateApply(id) {
   // console.log(id)
@@ -30,6 +22,7 @@ export function updateApply(id) {
     method: 'post'
   })
 }
+
 // 删除申请信息
 export function deleteApply(id) {
   // console.log(id)

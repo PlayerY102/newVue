@@ -129,7 +129,7 @@
       </el-table-column>
       <el-table-column label="email" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{row.email}}</span>
+          <span>{{ row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="归属机构 国籍" min-width="150px">
@@ -233,23 +233,23 @@
         </el-form-item> -->
         <el-form-item label="相关领域" prop="areaList">
           <el-tag
-            :key="tag"
             v-for="tag in temp.areaList"
+            :key="tag"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag)"
             style="margin-left: 10px"
-          >{{tag}}</el-tag>
+            @close="handleClose(tag)"
+          >{{ tag }}</el-tag>
           <el-input
-            class="input-new-tag"
             v-if="inputVisible"
-            v-model="inputValue"
             ref="saveTagInput"
+            v-model="inputValue"
+            class="input-new-tag"
             size="small"
+            style="margin-left: 10px"
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm"
-            style="margin-left: 10px"
-          ></el-input>
+          />
           <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
         </el-form-item>
         <!-- <el-form-item label="Imp">
@@ -266,7 +266,7 @@
     </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="相关领域">
-      <el-tag v-for="area in pvData" :key="area.id" type="success" style="margin: 5px">{{area}}</el-tag>
+      <el-tag v-for="area in pvData" :key="area.id" type="success" style="margin: 5px">{{ area }}</el-tag>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">确定</el-button>
       </span>
@@ -283,53 +283,51 @@
 // } from "@/api/article";
 
 import {
-  fetchScholorList,
-  // fetchList,
+  fetchList,
   createScholar,
   updateScholar,
-  deleteScholar,
-} from "@/api/scholar";
+  deleteScholar
+} from '@/api/scholar'
 
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const countryOptions = [
-  { key: "CN", display_name: "中国" },
-  { key: "US", display_name: "美国" },
-  { key: "JP", display_name: "日本" },
-  { key: "EU", display_name: "欧洲" },
-  { key: "OTS", display_name: "其他" }
-];
+  { key: 'CN', display_name: '中国' },
+  { key: 'US', display_name: '美国' },
+  { key: 'JP', display_name: '日本' },
+  { key: 'EU', display_name: '欧洲' },
+  { key: 'OTS', display_name: '其他' }
+]
 
 const countryKeyValue = countryOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name;
-  return acc;
-}, {});
+  acc[cur.key] = cur.display_name
+  return acc
+}, {})
 
 export default {
-  name: "ComplexTable",
+  name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     },
     countryFilter(type) {
-      return countryKeyValue[type];
+      return countryKeyValue[type]
     }
   },
   data() {
     return {
       inputVisible: false,
-      inputValue: "",
+      inputValue: '',
       tableKey: 0,
-      allList: null,
       list: null,
       total: 0,
       listLoading: true,
@@ -340,32 +338,29 @@ export default {
         name: undefined,
         affiliation: undefined,
         country: undefined,
-        // status: undefined,
         email: undefined,
-        areaList: [],
-        sort: "+id"
+        sort: '+id'
       },
       countryOptions,
       sortOptions: [
-        { label: "ID升序", key: "+id" },
-        { label: "ID降序", key: "-id" }
+        { label: 'ID升序', key: '+id' },
+        { label: 'ID降序', key: '-id' }
       ],
-      statusOptions: ["published", "draft", "deleted"],
+      statusOptions: ['published', 'draft', 'deleted'],
       temp: {
         id: undefined,
         timestamp: new Date(),
-        name: "",
-        affiliation: "",
-        country: "",
-        // status: "published",
-        email: "",
+        name: '',
+        affiliation: '',
+        country: '',
+        email: '',
         areaList: []
       },
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       textMap: {
-        update: "编辑",
-        create: "添加"
+        update: '编辑',
+        create: '添加'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -385,264 +380,212 @@ export default {
         //   { required: true, message: "title is required", trigger: "blur" }
         // ]
         name: [
-          { required: true, message: "name is required", trigger: "change" }
+          { required: true, message: 'name is required', trigger: 'change' }
         ],
         country: [
-          { required: true, message: "country is required", trigger: "change" }
+          { required: true, message: 'country is required', trigger: 'change' }
         ]
       },
       downloadLoading: false
-    };
+    }
   },
   created() {
-    // this.getList();
-    this.init()
+    this.getList()
   },
-  // mounted() {
-  //   this.getList()
-  // },
   methods: {
-    init() {
-      fetchScholorList().then( response => {
-        // console.log("ok")
-        this.allList = response.data.list;
-        this.getList()
+    // 根据搜索和排序进行在本地进行数据处理
+    getList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data.list
+        this.total = response.data.total
+        this.listLoading = false
       })
-      // this.getList()
     },
-    
+
     handleClose(tag) {
-      this.temp.areaList.splice(this.temp.areaList.indexOf(tag), 1);
+      this.temp.areaList.splice(this.temp.areaList.indexOf(tag), 1)
     },
 
     showInput() {
-      this.inputVisible = true;
+      this.inputVisible = true
       this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     },
 
     handleInputConfirm() {
-      let inputValue = this.inputValue;
+      const inputValue = this.inputValue
       if (inputValue) {
-        this.temp.areaList.push(inputValue);
+        this.temp.areaList.push(inputValue)
       }
-      this.inputVisible = false;
-      this.inputValue = "";
+      this.inputVisible = false
+      this.inputValue = ''
     },
-    // 根据搜索和排序进行在本地进行数据处理
-    getList() {
-      this.listLoading = true;
 
-      const { id, affiliation, country, name, email, page = 1, limit = 20, sort } = this.listQuery
-
-      let mockList = this.allList.filter(item => {
-        if (country && item.country !== country) return false
-        // if (title && item.title.indexOf(title) < 0) return false
-        if (affiliation && item.affiliation.indexOf(affiliation) < 0) return false
-        if (name && item.name.indexOf(name) < 0) return false
-        if (id && item.id !== parseInt(id)) return false
-        // if (status && item.status !== status) return false
-        if (email && item.email.indexOf(email)<0 ) return false
-        return true
-      })
-      
-      if (sort === '-id') {
-        mockList = mockList.reverse()
-      }
-
-      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-
-      this.list = pageList;
-      this.total = mockList.length;
-
-      // let response = fetchList(this.listQuery)
-      // this.list = response.data.items;
-      // this.total = response.data.total;
-      this.listLoading = false;
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items;
-      //   this.total = response.data.total;
-
-      //   // Just to simulate the time of the request
-      //   // setTimeout(() => {
-      //   //   this.listLoading = false;
-      //   // }, 1.5 * 1000);
-      //   this.listLoading = false;
-      // });
-    },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
+
     handleModifyStatus(row, status) {
-      if (status == 'deleted')
-        this.handleDelete(row)
-      else {
-        let tmp = Object.assign({}, row); // copy obj
+      if (status == 'deleted') { this.handleDelete(row) } else {
+        const tmp = Object.assign({}, row) // copy obj
         tmp.status = status
-        updateScholar(tmp).then(response=>{
-          row.status = status;
+        updateScholar(tmp).then(response => {
+          row.status = status
         })
         this.$message({
-          message: "操作成功",
-          type: "success"
-        });
+          message: '操作成功',
+          type: 'success'
+        })
       }
     },
     sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortByID(order);
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
       }
     },
     sortByID(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.sort = '-id'
       }
-      this.handleFilter();
+      this.handleFilter()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
         timestamp: new Date(),
-        name: "",
-        affiliation: "",
-        country: "",
-        // status: "published",
-        email: "",
+        name: '',
+        affiliation: '',
+        country: '',
+        email: '',
         areaList: []
-      };
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           // this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
           createScholar(this.temp).then(response => {
             // console.log(response.data)
             // this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
+            this.dialogFormVisible = false
             // 创建完后，重新从后台获取数据
-            this.init()
+            this.getList()
             this.$notify({
-              title: "Success",
-              message: "Created Successfully",
-              type: "success",
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
               duration: 2000
-            });
-          });
+            })
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          const tempData = Object.assign({}, this.temp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateScholar(tempData).then(() => {
-            // for (const v of this.list) {
-            //   if (v.id === this.temp.id) {
-            //     const index = this.list.indexOf(v);
-            //     this.list.splice(index, 1, this.temp);
-            //     break;
-            //   }
-            // }
-            this.dialogFormVisible = false;
+            this.dialogFormVisible = false
             // 更新完后，重新从后台获取数据
-            this.init()
+            this.getList()
             this.$notify({
-              title: "Success",
-              message: "Update Successfully",
-              type: "success",
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
               duration: 2000
-            });
-          });
+            })
+          })
         }
-      });
-    },  
+      })
+    },
 
     handleDelete(row) {
       this.$confirm('此操作将永久删除该用户, 是否继续?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async () => {
+      }).then(async() => {
         deleteScholar(row.id).then(() => {
           // 删除后，更新
-          this.init()
+          this.getList()
           this.$notify({
-            title: "Success",
-            message: "Delete Successfully",
-            type: "success",
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
             duration: 2000
-          });
+          })
         })
-      }).catch(()=>{});
+      }).catch(() => {})
     },
 
     handleFetchPv(pv) {
-      this.pvData = pv;
-      this.dialogPvVisible = true;
+      this.pvData = pv
+      this.dialogPvVisible = true
     },
 
     handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then(excel => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['ID', '', '姓名', '机构', '国籍', '领域', '邮箱']
         const filterVal = [
-          "timestamp",
-          "title",
-          "type",
-          "importance",
-          "status"
-        ];
-        const data = this.formatJson(filterVal, this.list);
+          'timestamp',
+          'title',
+          'type',
+          'importance',
+          'status'
+        ]
+        const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
-        });
-        this.downloadLoading = false;
-      });
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
+          if (j === 'timestamp') {
+            return parseTime(v[j])
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
+      )
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.sort
       return sort === `+${key}`
-        ? "ascending"
+        ? 'ascending'
         : sort === `-${key}`
-        ? "descending"
-        : "";
+          ? 'descending'
+          : ''
     }
   }
-};
+}
 </script>
