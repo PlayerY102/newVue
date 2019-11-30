@@ -145,7 +145,7 @@
           <el-input v-model="temp.id" :readonly="true" />
         </el-form-item>
         <el-form-item label="用户编号" prop="id">
-          <el-input v-model="temp.user_id" :readonly="true" />
+          <el-input v-model="temp.userId" :readonly="true" />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="temp.name" :readonly="true" />
@@ -245,7 +245,7 @@ export default {
         country: '',
         areaList: [],
         contact: '',
-        user_id: '',
+        userId: '',
         portrait: ''
       },
       dialogFormVisible: false,
@@ -339,7 +339,7 @@ export default {
         const tHeader = ['申请编号', '用户编号', '姓名', '机构', '国籍', '领域', '联系方式', '照片']
         const filterVal = [
           'id',
-          'user_id',
+          'userId',
           'name',
           'affiliation',
           'country',

@@ -30,11 +30,11 @@ GET /api/apply
 		list: [ // 用户申请的数组
 			{
 				id: 1,  // 申请的编号
-				user_id: 1, // 用户ID
+				userId: 1, // 用户ID
 				name: 'Elizabeth', // 姓名
 				affiliation: 'Qubuppydr Dryqx Lntm',//机构
 				country: 'CN', // 国籍 如{CN US,JP,EU,OTS}
-				area_list: ['AI', 'CS'], // 领域
+				areaList: ['AI', 'CS'], // 领域
 				contact: '13743962800', // 联系方式
 				portrait: 'http://url', // 肖像url
 			},
@@ -79,3 +79,16 @@ DELETE /apply/{id}
 ```
 
 ##### Request参数：
+
+**内嵌到URL**
+
+- id: 申请编号
+
+##### Response格式
+
+```
+{
+	code: 20000
+}
+```
+
